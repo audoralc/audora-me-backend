@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//api end in post, basically end point of URL
+//ref store func in controller
+Route::post('storeArticle', 'ArticlesController@store');
