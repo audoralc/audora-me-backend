@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 //api end in post, basically end point of URL
 //ref store func in controller
 Route::post('storeArticle', 'ArticlesController@store');
+Route::get('getArticles', 'ArticlesController@index');
+Route::post('updateArticle/{id}', 'ArticlesController@update');
+Route::get('showArticle/{id}', 'ArticlesController@show');
+Route::post('deleteArticle/{id}', 'ArticlesController@delete'); 
