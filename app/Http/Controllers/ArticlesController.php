@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Article;
 use Response;
+use Illuminate\Support\Facades\Validator;
+use Purifier;
 
 class ArticlesController extends Controller
 {
@@ -19,6 +21,19 @@ class ArticlesController extends Controller
 //store article - takes request param from front
     public function store(Request $request)
     {
+      //create rules 4 req fields
+      $rules = [
+        'title' => 'required',
+        'body' => 'required',
+        'image' => 'required', //req in db so consist
+      ];
+      //pass data in
+      $validator = Validator::make(Purifier::clean ($request->all()), $rules);
+
+      if ($validator->fails()) {
+        return Response::json(["error" => "all fields required"]);
+      }
+      /*some folks would put below in else statement but it's not req, more syntax/situ pref */
       $article = new Article;
       $article->title = $request->input('title');
       $article->body = $request->input('body');
