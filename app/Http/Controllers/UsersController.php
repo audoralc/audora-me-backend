@@ -3,41 +3,67 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Purifier;
+use Response;
+use App\User;
+use Hash;
+use JWTAuth;
 
 class UsersController extends Controller
 {
-  public function storeUser(){
+  public function storeUser(Request $request){
 
     $rules = [
       'name'  => 'required',
       'email' => 'required',
-      'password' => 'required',
+      'password' => 'required'
     ];
 
-    $user= new User;
-    $user->name =
-    $request->input('name');
-    $user->email =
-    $request->input('email');
-    $user->password =
-    $request->input('password');
+    $validator = Validator::make(Purifier::clean($request->all()), $rules);
 
-    $user->save();
+    if ($validator->fails()) {
+      return Response::json(["error" => "all fields required"]);
+    }
 
-    return Response::json(['success' => 'user registered']);
+    else {
+      $check=User::where('email', '=', $request->input('email'))->orWhere('name', '=', $request->input('name'))->first();
+      //is check empty
+      if (!empty($check)){
+        return Response::json(['error' => 'user already exists']);
+      }
+
+      $user= new User;
+      $user->name =
+      $request->input('name');
+      $user->email =
+      $request->input('email');
+      $user->password = Hash::make($request->input('password'));
+
+      $user->save();
+
+      return Response::json(['success' => 'user registered']);
+    }
   }
 
-  public function (Request $request) {
 
+  public function signIn(Request $request) {
     $rules = [
       'email' => 'required',
-      'password' => 'required',
+      'password' => 'required'
     ];
 
+    $validator = Validator::make(Purifier::clean($request->all()), $rules);
 
+    if ($validator->fails()) {
+      return Response::json(["error" => "all fields required"]);
+    }
+
+    $email= $request->input('email');
+    $password= $request->input('password');
+    $cred= compact('email', 'password', ['email', 'password']);
+
+    $token= JWTAuth::attempt($cred);
+    return Response::json(compact('token'));    
   }
-
-
-
-
-}
+  }
