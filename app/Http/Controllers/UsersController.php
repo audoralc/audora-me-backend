@@ -9,6 +9,7 @@ use Response;
 use App\User;
 use Hash;
 use JWTAuth;
+use File;
 
 class UsersController extends Controller
 {
@@ -64,6 +65,12 @@ class UsersController extends Controller
     $cred= compact('email', 'password', ['email', 'password']);
 
     $token= JWTAuth::attempt($cred);
-    return Response::json(compact('token'));    
+    return Response::json(compact('token'));
   }
+
+  public function index()
+  {
+    return File::get('index.html');
+  }
+
   }
