@@ -23,4 +23,4 @@ Route::post('deleteArticle/{id}', 'ArticlesController@delete');
 Route::post('storeUser', 'UsersController@storeUser');
 Route::post('signIn', 'UsersController@signIn');
 //sends anyone who tries to access be to index last route
-Route::any(('path?'), "UsersController@index")->where("path", ".+"); 
+Route::any('{path?}', "UsersController@index")->where("path", ".+"); 
