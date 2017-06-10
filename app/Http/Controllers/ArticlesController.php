@@ -79,6 +79,17 @@ class ArticlesController extends Controller
       return Response::json($article);
     }
 
+//fetch lastest 3 articles
+
+  public function latest()
+  { 
+    $_latest = Article::orderBy('id', 'desc')->take(3)->get();
+
+    $latest = array_reverse($_latest); 
+
+    return Response::json($latest); 
+  }
+
 //delete an article
     public function delete($id)
     {

@@ -72,5 +72,4 @@ class UsersController extends Controller
   {
     return File::get('index.html');
   }
-
-  }
+}
