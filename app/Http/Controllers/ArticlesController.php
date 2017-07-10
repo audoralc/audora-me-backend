@@ -37,6 +37,9 @@ class ArticlesController extends Controller
       $article = new Article;
       $article->title = $request->input('title');
       $article->body = $request->input('body');
+      $article->blurb = $request->input('blurb'); 
+      $article->slug = $request->input('slug'); 
+      $article->time = $request->date('created_at'); 
 
       $image=$request->file('image');
       $imageName= $image->getClientOriginalName();
@@ -60,6 +63,9 @@ class ArticlesController extends Controller
 
       $article->title = $request->input('title');
       $article->body = $request->input('body');
+       $article->blurb = $request->input('blurb'); 
+      $article->slug = $request->input('slug'); 
+      $article->time = $request->date('created_at'); 
 
       $image=$request->file('image');
       $imageName= $image->getClientOriginalName();
